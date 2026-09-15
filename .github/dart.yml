@@ -1,10 +1,10 @@
-name: DART v16 MAX - 불장 알람 (7시+8시) FIXED
+name: DART v16 MAX - 불장 알람 FIXED
 
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 10 * * *'  # 19:00 KST
-    - cron: '0 23 * * *'  # 08:00 KST next day
+    - cron: '0 23 * * *'  # 08:00 KST
 
 jobs:
   build-and-deploy:
@@ -20,51 +20,44 @@ jobs:
           python-version: '3.11'
       - name: Install deps
         run: pip install requests beautifulsoup4
-      - name: Run scorer (auto-detect file)
+      - name: Run scorer - auto detect
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
-          echo "Files in root:"
-          ls -la *.py || echo "no py"
+          ls -la
           if [ -f main.py ]; then
-            echo "Running main.py"
+            echo "Found main.py - running"
             python main.py
           elif [ -f main_v16_max.py ]; then
-            echo "Running main_v16_max.py"
+            echo "Found main_v16_max.py - running"
             python main_v16_max.py
           elif [ -f main_v15.py ]; then
-            echo "Running main_v15.py"
+            echo "Found main_v15.py - running"
             python main_v15.py
           else
-            echo "ERROR: no main file found"
-            ls -R
+            echo "No main file found! Listing all py:"
+            find . -name "*.py" | head -20
             exit 1
           fi
-          echo "=== dist ==="
           ls -lh dist/
-          cat dist/news_sns_v15_min.json | head -100
-      - name: Deploy to gh-pages (robust)
+          cat dist/news_sns_v15_min.json | head -200
+      - name: Deploy to gh-pages
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          # 백업
           mkdir -p /tmp/deploy
           cp -r dist/* /tmp/deploy/
-          echo "backup done"
-          # gh-pages 브랜치 처리 - 이미 있으면 가져오고 없으면 orphan
-          git fetch origin gh-pages || echo "no gh-pages yet"
+          git fetch origin gh-pages || echo "no gh-pages branch yet"
           if git show-ref --verify --quiet refs/heads/gh-pages; then
             git checkout gh-pages
           else
             git checkout --orphan gh-pages
           fi
-          # 깨끗이 비우고 배포 파일만
-          rm -rf *.py *.json *.yml .github || true
-          rm -rf dist || true
+          # clean
+          rm -rf *.py *.json .github dart.yml 2>/dev/null || true
+          rm -rf dist 2>/dev/null || true
           cp -r /tmp/deploy/* .
           touch .nojekyll
-          ls -la
           git add .
-          git commit -m "deploy v16 MAX $(date +'%Y-%m-%d %H:%M:%S KST') - 불장알람" || echo "no changes to commit"
+          git commit -m "deploy v16 MAX $(date +'%Y-%m-%d %H:%M:%S KST') - 불장알람" || echo "no changes"
           git push -f origin gh-pages
-          echo "Deploy OK"
