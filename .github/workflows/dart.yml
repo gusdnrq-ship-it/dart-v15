@@ -1,9 +1,10 @@
-name: DART v15 - 매일 불장 TOP3 (Zero Warning)
+name: DART v16 MAX - 불장 알람 (오후7시 + 오전8시)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 23 * * *'
+    - cron: '0 10 * * *'  # 19:00 KST = 10:00 UTC - 오후 7시 마감 알람
+    - cron: '0 23 * * *'  # 08:00 KST = 23:00 UTC 전날 - 오전 8시 장전 알람
 
 jobs:
   build-and-deploy:
@@ -15,23 +16,25 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Run v15 scorer
+      - name: Install deps
+        run: pip install requests beautifulsoup4
+      - name: Run v16 MAX scorer
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
-          pip install requests beautifulsoup4
-          python main_v15.py
+          python main_v16_max.py
           ls -lh dist/
-          cat dist/news_sns_v15_min.json | head -20
-      - name: Deploy to gh-pages (no upload-artifact)
+          echo "=== TOP3 ==="
+          cat dist/news_sns_v15_min.json | grep -A2 top3 | head -30
+          echo "=== ALARM ==="
+          cat dist/alarm_message.txt
+      - name: Deploy to gh-pages (Zero Warning)
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git checkout --orphan gh-pages
-          git --work-tree=dist checkout HEAD -- dist || true
-          # dist 폴더 내용을 루트로 복사
           cp -r dist/* . 2>/dev/null || true
           touch .nojekyll
           git add .
-          git commit -m "deploy v15 $(date +'%Y-%m-%d %H:%M:%S KST')" || echo "no changes"
+          git commit -m "deploy v16 MAX $(date +'%Y-%m-%d %H:%M:%S KST') - 불장알람" || echo "no changes"
           git push -f origin gh-pages
