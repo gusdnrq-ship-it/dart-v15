@@ -1,4 +1,4 @@
-name: DART v15 - 매일 불장 TOP3
+name: DART v15 - 매일 불장 TOP3 (Zero Warning)
 
 on:
   workflow_dispatch:
@@ -6,33 +6,32 @@ on:
     - cron: '30 23 * * *'
 
 jobs:
-  fetch-and-score:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Run v15
+      - name: Run v15 scorer
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
           pip install requests beautifulsoup4
           python main_v15.py
-      - name: Upload
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./dist
-
-  deploy-pages:
-    needs: fetch-and-score
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          ls -lh dist/
+          cat dist/news_sns_v15_min.json | head -20
+      - name: Deploy to gh-pages (no upload-artifact)
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout --orphan gh-pages
+          git --work-tree=dist checkout HEAD -- dist || true
+          # dist 폴더 내용을 루트로 복사
+          cp -r dist/* . 2>/dev/null || true
+          touch .nojekyll
+          git add .
+          git commit -m "deploy v15 $(date +'%Y-%m-%d %H:%M:%S KST')" || echo "no changes"
+          git push -f origin gh-pages
