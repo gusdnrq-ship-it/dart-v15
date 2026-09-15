@@ -1,28 +1,29 @@
 name: DART v15 - 매일 불장 TOP3
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '30 23 * * *'
-  workflow_dispatch:
 
 jobs:
   fetch-and-score:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Install
-        run: pip install requests beautifulsoup4
-      - name: Run v15 scorer
+      - name: Run v15
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
-        run: python main_v15.py
-      - name: Upload Pages
+        run: |
+          pip install requests beautifulsoup4
+          python main_v15.py
+      - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
+
   deploy-pages:
     needs: fetch-and-score
     runs-on: ubuntu-latest
@@ -33,7 +34,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
-      - name: Deploy
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
