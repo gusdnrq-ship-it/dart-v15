@@ -1,0 +1,47 @@
+name: DART v15 - 매일 불장 TOP3
+
+on:
+  schedule:
+    - cron: '30 23 * * *'  # KST 08:30 (UTC 23:30)
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  fetch-and-score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Run v15 scorer
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          python main_v15.py
+          
+      - name: Upload to GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+          
+  deploy-pages:
+    needs: fetch-and-score
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
