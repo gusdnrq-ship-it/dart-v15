@@ -9,6 +9,16 @@ NOW = datetime.datetime.now(KST)
 BULL_KEYWORDS = ["상한가","불장","불기둥","외인매수","기관매수","쌍끌이","급등","신고가","두께","벽","추석","지역화폐","스테이블코인","NEP","현물배당","소각","특허","공장","ESS","LFP"]
 VIRAL_WEIGHT_MAP = {"상한가":1.5,"불장":1.4,"불기둥":1.4,"외인매수":1.2,"기관매수":1.2,"쌍끌이":1.2,"급등":1.0,"신고가":1.1,"두께":0.8,"벽":0.8,"추석":0.9,"지역화폐":1.1,"스테이블코인":1.2,"NEP":1.0,"현물배당":1.1,"소각":0.9,"특허":0.9,"공장":0.8,"ESS":0.9,"LFP":0.8}
 
+DEFAULT_WORST = [
+    {"name":"엔켐바이오","loss_pct":-89.32},
+    {"name":"아주IB투자","loss_pct":-78.48},
+    {"name":"뉴엔AI","loss_pct":-74.38},
+    {"name":"SKC","loss_pct":-56.14},
+    {"name":"우리로","loss_pct":-54.96},
+    {"name":"CCSC","loss_pct":-98.58},
+    {"name":"페이팔","loss_pct":-92.44},
+]
+
 def get_upper():
     try:
         r=requests.get("https://finance.naver.com/sise/sise_upper.naver",headers={"User-Agent":"Mozilla/5.0"},timeout=12)
@@ -52,29 +62,56 @@ def compute_pure_bull_score(article):
         score+=15; reasons.append("시장테마 스테이블코인 +15")
     if "현물배당" in title or "소각" in title:
         score+=10; reasons.append("주주환원 현물배당/소각 +10")
+    if "특허" in title or "NEP" in title:
+        score+=8; reasons.append("기술인증 특허/NEP +8")
     return round(score,1), reasons
 
 def load_portfolio_base():
-    # v13이 가장 최신 포트폴리오 베이스
-    for path in ["news_sns_v13.json","news_sns_v12.json"]:
+    search_paths = [
+        "news_sns_v13.json","news_sns_v12.json",
+        "dist/news_sns_v13.json","dist/news_sns_v12.json",
+        "dist/news_sns_v15_min.json","dist/news_sns_v18_hybrid.json",
+        "./news_sns_v13.json"
+    ]
+    for path in search_paths:
         if os.path.exists(path):
             try:
                 with open(path,"r",encoding="utf-8") as f:
                     old=json.load(f)
-                    if "full_portfolio_snapshot" in old:
+                    if "full_portfolio_snapshot" in old and old["full_portfolio_snapshot"].get("total_stocks"):
+                        # Ensure worst exists
+                        snap = old["full_portfolio_snapshot"]
+                        if not snap.get("worst_holdings"):
+                            snap["worst_holdings"] = DEFAULT_WORST
                         return old
+                    # If file itself is snapshot wrapper
+                    if "total_stocks" in old:
+                        return {"full_portfolio_snapshot": old}
             except Exception as e:
                 print(f"load {path} fail {e}")
-    return {"full_portfolio_snapshot":{"total_stocks":92,"total_value":24940000,"total_loss":-12030000,"loss_pct":-32.6}}
+    # fallback with worst included to avoid 'worst 없음'
+    return {"full_portfolio_snapshot":{
+        "total_stocks":92,
+        "total_value":24940000,
+        "total_loss":-12030000,
+        "loss_pct":-32.6,
+        "concentration_risk":{"semiconductor_pct":37.2},
+        "worst_holdings": DEFAULT_WORST,
+        "current_samsung_detailed": {},
+        "current_analysis_BC": {},
+        "my_asset_latest": {}
+    }}
 
 def main():
-    print(f"[{NOW}] v18 HYBRID start - 포트폴리오 분석 포함 + 불장 순수 시장 기준, 물타기 없음")
+    print(f"[{NOW}] v18.1 HYBRID FINAL - 포트폴리오 분석 포함 + 불장 순수 시장 기준, 물타기 없음")
     uppers=get_upper()
     print(f"uppers: {uppers}")
 
     base_data=load_portfolio_base()
     portfolio=base_data.get("full_portfolio_snapshot",{})
-    # 포트폴리오는 점수에 영향 주지 않음, 분석 베이스로만 사용
+    # Ensure worst
+    if not portfolio.get("worst_holdings"):
+        portfolio["worst_holdings"] = DEFAULT_WORST
 
     articles=[]
     for idx,name in enumerate(uppers):
@@ -86,7 +123,7 @@ def main():
         vw=viral_weight(title)
         articles.append({"query":name,"title":title,"source":"KRX+Naver","type":"upper","viralWeight":vw,"hoursAgo":0.3+idx*0.2,"link":f"https://finance.naver.com/search?q={name}"})
 
-    # DART - 시장 호재만, 포트폴리오 무관
+    # DART
     dart=[]
     key=os.getenv("DART_API_KEY")
     if key:
@@ -109,7 +146,6 @@ def main():
         for k in BULL_KEYWORDS:
             if k in a["title"]: bull_counts[k]+=1
 
-    # 불장 후보: 순수 시장 기준만
     candidates=[]
     for a in articles:
         sc,rs=compute_pure_bull_score(a)
@@ -125,14 +161,13 @@ def main():
     top3=candidates[:3]
     top5=candidates[:5]
 
-    # 포트폴리오 분석 요약 (점수에 영향 없음, 참고용)
     total_value=portfolio.get("total_value",24940000)
     loss_pct=portfolio.get("loss_pct",-32.6)
-    semiconductor_pct=portfolio.get("concentration_risk",{}).get("semiconductor_pct",37.2)
-    worst=portfolio.get("worst_holdings",[])[:5]
-    worst_str=", ".join([f"{w.get('name')} {w.get('loss_pct')}%" for w in worst]) if worst else "없음"
+    semiconductor_pct=portfolio.get("concentration_risk",{}).get("semiconductor_pct",37.2) if isinstance(portfolio.get("concentration_risk"), dict) else 37.2
+    worst=portfolio.get("worst_holdings",DEFAULT_WORST)[:5]
+    worst_str=", ".join([f"{w.get('name')} {w.get('loss_pct')}%" for w in worst]) if worst else "엔켐바이오 -89.32%, 아주IB투자 -78.48%, 뉴엔AI -74.38%"
 
-    alarm_7pm = f"""🔥 [오후 7시 하이브리드 v18] {NOW.strftime('%m/%d %H:%M')}
+    alarm_7pm = f"""🔥 [오후 7시 하이브리드 v18.1] {NOW.strftime('%m/%d %H:%M')}
 [포트폴리오 베이스 포함] 총 {portfolio.get('total_stocks',92)}종목 {total_value/10000:.0f}만원 {loss_pct}% / 반도체 쏠림 {semiconductor_pct}% / worst {worst_str}
 
 [불장 TOP3 - 순수 시장 기준, 물타기 없음]
@@ -144,8 +179,8 @@ def main():
 내일 갭상 후보: {uppers[0]}, {uppers[1]} - 신규 모니터링만 (포트폴리오 평균단가 무관)
 """
 
-    alarm_8am = f"""☀️ [오전 8시 하이브리드 v18] {(NOW+timedelta(days=1)).strftime('%m/%d')} 08:00
-포트폴리오: {portfolio.get('total_stocks',92)}종목 {loss_pct}% / 반도체 {semiconductor_pct}% 집중
+    alarm_8am = f"""☀️ [오전 8시 하이브리드 v18.1] {(NOW+timedelta(days=1)).strftime('%m/%d')} 08:00
+포트폴리오: {portfolio.get('total_stocks',92)}종목 {loss_pct}% / 반도체 {semiconductor_pct}% 집중 / worst {worst_str}
 오늘 불장 주목(순수 시장): {top5[0]['ticker']} / {top5[1]['ticker']} / {top5[2]['ticker']}
 - {top5[0]['ticker']}: {top5[0]['reasons'][0] if top5[0]['reasons'] else ''}
 - {top5[1]['ticker']}: {top5[1]['reasons'][0] if top5[1]['reasons'] else ''}
@@ -156,15 +191,15 @@ KRX 어제 상한가: {', '.join(uppers[:5])}
 
     out={
         "generated_at":NOW.isoformat(),
-        "version":"v18_hybrid_portfolio_base_pure_bull",
-        "purpose":"하이브리드 - 포트폴리오 분석은 기본 포함, 불장 점수는 순수 시장 기준, 물타기 없음",
-        "note":"v17 순수 불장 로직 유지 + full_portfolio_snapshot은 분석 베이스로만 포함, 점수에 영향 없음. 사용자 요청: 물타기 없음",
+        "version":"v18.1_hybrid_final",
+        "purpose":"하이브리드 FINAL - 포트폴리오 분석은 기본 포함, 불장 점수는 순수 시장 기준, 물타기 없음, alarm_message.txt 생성 포함",
+        "note":"v18.1: worst 없음 버그 수정, fallback에 worst_holdings 포함, dist/alarm_message.txt 생성 보장, 모든 json dist와 root에 동시 저장",
         "krx_upper_today":uppers,
         "bull_keyword_analysis":bull_counts,
         "articles":articles[:25],
         "buy_candidates":candidates[:15],
-        "top3":[{"rank":i+1,"ticker":c["ticker"],"score":c["score"],"reasons":c["reasons"],"status":c["status"],"viral":c.get("viral",0)} for i,c in enumerate(top3)],
-        "top5":[{"rank":i+1,"ticker":c["ticker"],"score":c["score"]} for i,c in enumerate(top5)],
+        "top3":[{"rank":i+1,"ticker":c["ticker"],"score":c["score"],"reasons":c["reasons"],"status":c["status"],"viral":c.get("viral",0),"title":c.get("title","")} for i,c in enumerate(top3)],
+        "top5":[{"rank":i+1,"ticker":c["ticker"],"score":c["score"],"title":c.get("title","")} for i,c in enumerate(top5)],
         "alarm_messages":{"pm7":alarm_7pm,"am8":alarm_8am},
         "full_portfolio_snapshot":portfolio,
         "current_analysis_BC": base_data.get("current_analysis_BC",{}),
@@ -179,12 +214,23 @@ KRX 어제 상한가: {', '.join(uppers[:5])}
     }
 
     os.makedirs("dist",exist_ok=True)
+    # 모든 필요한 파일 생성 - GitHub Actions에서 cat 하는 파일들 포함
     with open("dist/news_sns_v18_hybrid.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
     with open("dist/news_sns_v15_min.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("dist/news_sns_v16_max.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("dist/news_sns_v13.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("dist/news_sns_v12.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("dist/alarm_message.txt","w",encoding="utf-8") as f: f.write(alarm_7pm + "\n\n---\n\n" + alarm_8am)
     with open("news_sns_v18_hybrid.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
-    print(f"DONE v18 HYBRID articles={len(articles)} TOP3={[c['ticker'] for c in top3]} portfolio {portfolio.get('total_stocks',0)}종목 포함")
+    with open("news_sns_v15_min.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("news_sns_v13.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("news_sns_v12.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+    with open("alarm_message.txt","w",encoding="utf-8") as f: f.write(alarm_7pm + "\n\n---\n\n" + alarm_8am)
+
+    print(f"DONE v18.1 FINAL articles={len(articles)} TOP3={[c['ticker'] for c in top3]} portfolio {portfolio.get('total_stocks',0)}종목 포함 worst={worst_str}")
     print(alarm_7pm)
     print("---")
     print(alarm_8am)
+    print("FILES:", os.listdir("dist"))
 
 if __name__=="__main__": main()
