@@ -1,0 +1,562 @@
+{
+  "generated_at": "2026-09-26T23:05:03.644598+09:00",
+  "version": "v18.1_hybrid_final",
+  "purpose": "하이브리드 FINAL - 포트폴리오 분석은 기본 포함, 불장 점수는 순수 시장 기준, 물타기 없음, alarm_message.txt 생성 포함",
+  "note": "v18.1: worst 없음 버그 수정, fallback에 worst_holdings 포함, dist/alarm_message.txt 생성 보장, 모든 json dist와 root에 동시 저장",
+  "krx_upper_today": [
+    "코나아이",
+    "헥토파이낸셜",
+    "한화생명",
+    "우리로",
+    "리튬포어스",
+    "덕산테코피아",
+    "하이드로리튬",
+    "에이엔피",
+    "금호에이치티",
+    "빛과전자"
+  ],
+  "bull_keyword_analysis": {
+    "상한가": 4,
+    "불장": 4,
+    "불기둥": 1,
+    "외인매수": 7,
+    "기관매수": 1,
+    "쌍끌이": 1,
+    "급등": 7,
+    "신고가": 1,
+    "두께": 2,
+    "벽": 1,
+    "추석": 1,
+    "지역화폐": 1,
+    "스테이블코인": 1,
+    "NEP": 0,
+    "현물배당": 1,
+    "소각": 0,
+    "특허": 0,
+    "공장": 0,
+    "ESS": 0,
+    "LFP": 0
+  },
+  "articles": [
+    {
+      "query": "코나아이",
+      "title": "코나아이 강원 8개 시군 NH포인트 지역화폐 전환 상한가 불장 추석 더블찬스",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 4.9,
+      "hoursAgo": 0.3,
+      "link": "https://finance.naver.com/search?q=코나아이"
+    },
+    {
+      "query": "헥토파이낸셜",
+      "title": "스테이블코인 제도화 헥토파이낸셜 상한가 불장 크로스보더 3500억 돌파",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 4.1,
+      "hoursAgo": 0.5,
+      "link": "https://finance.naver.com/search?q=헥토파이낸셜"
+    },
+    {
+      "query": "한화생명",
+      "title": "한화생명 상한가 불장 불기둥 외인매수 기관매수 쌍끌이 급등 신고가 두께 12만주",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 6.0,
+      "hoursAgo": 0.7,
+      "link": "https://finance.naver.com/search?q=한화생명"
+    },
+    {
+      "query": "우리로",
+      "title": "우리로 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 0.9000000000000001,
+      "link": "https://finance.naver.com/search?q=우리로"
+    },
+    {
+      "query": "리튬포어스",
+      "title": "리튬포어스 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 1.1,
+      "link": "https://finance.naver.com/search?q=리튬포어스"
+    },
+    {
+      "query": "덕산테코피아",
+      "title": "덕산테코피아 현물배당 5% 결정 상한가 직행 불장 확정 두께 11만주 벽 3개",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 5.6,
+      "hoursAgo": 1.3,
+      "link": "https://finance.naver.com/search?q=덕산테코피아"
+    },
+    {
+      "query": "하이드로리튬",
+      "title": "하이드로리튬 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 1.5000000000000002,
+      "link": "https://finance.naver.com/search?q=하이드로리튬"
+    },
+    {
+      "query": "에이엔피",
+      "title": "에이엔피 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 1.7000000000000002,
+      "link": "https://finance.naver.com/search?q=에이엔피"
+    },
+    {
+      "query": "금호에이치티",
+      "title": "금호에이치티 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 1.9000000000000001,
+      "link": "https://finance.naver.com/search?q=금호에이치티"
+    },
+    {
+      "query": "빛과전자",
+      "title": "빛과전자 급등 외인매수",
+      "source": "KRX+Naver",
+      "type": "upper",
+      "viralWeight": 2.2,
+      "hoursAgo": 2.1,
+      "link": "https://finance.naver.com/search?q=빛과전자"
+    },
+    {
+      "query": "유안타제15호스팩",
+      "title": "주권매매거래정지              (상장폐지 사유발생)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900787"
+    },
+    {
+      "query": "SK증권제11호스팩",
+      "title": "주권매매거래정지              (상장폐지 사유발생)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900782"
+    },
+    {
+      "query": "케이쓰리아이",
+      "title": "주요사항보고서(유상증자결정)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000638"
+    },
+    {
+      "query": "케이쓰리아이",
+      "title": "주요사항보고서(전환사채권발행결정)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000637"
+    },
+    {
+      "query": "아이스크림에듀",
+      "title": "기타시장안내              (시가총액 미달에 따른 상장폐지 우려 관련 안내)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900769"
+    },
+    {
+      "query": "비케이홀딩스",
+      "title": "기타시장안내              (시가총액 미달에 따른 상장폐지 우려 관련 안내)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900767"
+    },
+    {
+      "query": "세진티에스",
+      "title": "주권매매거래정지              (상장폐지 사유발생)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900762"
+    },
+    {
+      "query": "스코넥",
+      "title": "주권매매거래정지기간변경              (회생절차 개시신청)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900759"
+    },
+    {
+      "query": "더코디",
+      "title": "[기재정정]주주총회소집결의              (임시주주총회)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900766"
+    },
+    {
+      "query": "형지I&C",
+      "title": "기타시장안내              (시가총액 미달에 따른 상장폐지 우려 관련 안내)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900770"
+    },
+    {
+      "query": "더코디",
+      "title": "[기재정정]주주총회소집공고",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000639"
+    },
+    {
+      "query": "휴온스글로벌",
+      "title": "불성실공시법인지정예고              (공시번복 3건)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900755"
+    },
+    {
+      "query": "휴온스",
+      "title": "불성실공시법인지정예고              (공시번복 2건)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900768"
+    },
+    {
+      "query": "비에이치아이",
+      "title": "[기재정정]단일판매ㆍ공급계약체결              ",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923900749"
+    },
+    {
+      "query": "스코넥",
+      "title": "주요사항보고서(회생절차개시신청)",
+      "source": "DART",
+      "type": "dart",
+      "viralWeight": 0.0,
+      "hoursAgo": 2.0,
+      "link": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000634"
+    }
+  ],
+  "buy_candidates": [
+    {
+      "ticker": "코나아이",
+      "score": 79.3,
+      "viral": 4.9,
+      "reasons": [
+        "바이럴 4.9 x 신선도 1.0 +34.3",
+        "시장테마 지역화폐/추석 +15"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "코나아이 강원 8개 시군 NH포인트 지역화폐 전환 상한가 불장 추석 더블찬스",
+      "hoursAgo": 0.3
+    },
+    {
+      "ticker": "덕산테코피아",
+      "score": 79.2,
+      "viral": 5.6,
+      "reasons": [
+        "바이럴 5.6 x 신선도 1.0 +39.2",
+        "주주환원 현물배당/소각 +10"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "덕산테코피아 현물배당 5% 결정 상한가 직행 불장 확정 두께 11만주 벽 3개",
+      "hoursAgo": 1.3
+    },
+    {
+      "ticker": "헥토파이낸셜",
+      "score": 73.7,
+      "viral": 4.1,
+      "reasons": [
+        "바이럴 4.1 x 신선도 1.0 +28.7",
+        "시장테마 스테이블코인 +15"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "스테이블코인 제도화 헥토파이낸셜 상한가 불장 크로스보더 3500억 돌파",
+      "hoursAgo": 0.5
+    },
+    {
+      "ticker": "한화생명",
+      "score": 72.0,
+      "viral": 6.0,
+      "reasons": [
+        "바이럴 6.0 x 신선도 1.0 +42.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "한화생명 상한가 불장 불기둥 외인매수 기관매수 쌍끌이 급등 신고가 두께 12만주",
+      "hoursAgo": 0.7
+    },
+    {
+      "ticker": "우리로",
+      "score": 45.4,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 1.0 +15.4"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "우리로 급등 외인매수",
+      "hoursAgo": 0.9000000000000001
+    },
+    {
+      "ticker": "리튬포어스",
+      "score": 45.4,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 1.0 +15.4"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "리튬포어스 급등 외인매수",
+      "hoursAgo": 1.1
+    },
+    {
+      "ticker": "하이드로리튬",
+      "score": 45.4,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 1.0 +15.4"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "하이드로리튬 급등 외인매수",
+      "hoursAgo": 1.5000000000000002
+    },
+    {
+      "ticker": "에이엔피",
+      "score": 45.4,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 1.0 +15.4"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "에이엔피 급등 외인매수",
+      "hoursAgo": 1.7000000000000002
+    },
+    {
+      "ticker": "금호에이치티",
+      "score": 45.4,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 1.0 +15.4"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "금호에이치티 급등 외인매수",
+      "hoursAgo": 1.9000000000000001
+    },
+    {
+      "ticker": "빛과전자",
+      "score": 43.9,
+      "viral": 2.2,
+      "reasons": [
+        "바이럴 2.2 x 신선도 0.9 +13.9"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "빛과전자 급등 외인매수",
+      "hoursAgo": 2.1
+    },
+    {
+      "ticker": "유안타제15호스팩",
+      "score": 30.0,
+      "viral": 0.0,
+      "reasons": [
+        "바이럴 0.0 x 신선도 1.0 +0.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "주권매매거래정지              (상장폐지 사유발생)",
+      "hoursAgo": 2.0
+    },
+    {
+      "ticker": "SK증권제11호스팩",
+      "score": 30.0,
+      "viral": 0.0,
+      "reasons": [
+        "바이럴 0.0 x 신선도 1.0 +0.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "주권매매거래정지              (상장폐지 사유발생)",
+      "hoursAgo": 2.0
+    },
+    {
+      "ticker": "케이쓰리아이",
+      "score": 30.0,
+      "viral": 0.0,
+      "reasons": [
+        "바이럴 0.0 x 신선도 1.0 +0.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "주요사항보고서(유상증자결정)",
+      "hoursAgo": 2.0
+    },
+    {
+      "ticker": "아이스크림에듀",
+      "score": 30.0,
+      "viral": 0.0,
+      "reasons": [
+        "바이럴 0.0 x 신선도 1.0 +0.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "기타시장안내              (시가총액 미달에 따른 상장폐지 우려 관련 안내)",
+      "hoursAgo": 2.0
+    },
+    {
+      "ticker": "비케이홀딩스",
+      "score": 30.0,
+      "viral": 0.0,
+      "reasons": [
+        "바이럴 0.0 x 신선도 1.0 +0.0"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "title": "기타시장안내              (시가총액 미달에 따른 상장폐지 우려 관련 안내)",
+      "hoursAgo": 2.0
+    }
+  ],
+  "top3": [
+    {
+      "rank": 1,
+      "ticker": "코나아이",
+      "score": 79.3,
+      "reasons": [
+        "바이럴 4.9 x 신선도 1.0 +34.3",
+        "시장테마 지역화폐/추석 +15"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "viral": 4.9,
+      "title": "코나아이 강원 8개 시군 NH포인트 지역화폐 전환 상한가 불장 추석 더블찬스"
+    },
+    {
+      "rank": 2,
+      "ticker": "덕산테코피아",
+      "score": 79.2,
+      "reasons": [
+        "바이럴 5.6 x 신선도 1.0 +39.2",
+        "주주환원 현물배당/소각 +10"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "viral": 5.6,
+      "title": "덕산테코피아 현물배당 5% 결정 상한가 직행 불장 확정 두께 11만주 벽 3개"
+    },
+    {
+      "rank": 3,
+      "ticker": "헥토파이낸셜",
+      "score": 73.7,
+      "reasons": [
+        "바이럴 4.1 x 신선도 1.0 +28.7",
+        "시장테마 스테이블코인 +15"
+      ],
+      "status": "순수 불장 - 시장 상한가 (포트폴리오 무관)",
+      "viral": 4.1,
+      "title": "스테이블코인 제도화 헥토파이낸셜 상한가 불장 크로스보더 3500억 돌파"
+    }
+  ],
+  "top5": [
+    {
+      "rank": 1,
+      "ticker": "코나아이",
+      "score": 79.3,
+      "title": "코나아이 강원 8개 시군 NH포인트 지역화폐 전환 상한가 불장 추석 더블찬스"
+    },
+    {
+      "rank": 2,
+      "ticker": "덕산테코피아",
+      "score": 79.2,
+      "title": "덕산테코피아 현물배당 5% 결정 상한가 직행 불장 확정 두께 11만주 벽 3개"
+    },
+    {
+      "rank": 3,
+      "ticker": "헥토파이낸셜",
+      "score": 73.7,
+      "title": "스테이블코인 제도화 헥토파이낸셜 상한가 불장 크로스보더 3500억 돌파"
+    },
+    {
+      "rank": 4,
+      "ticker": "한화생명",
+      "score": 72.0,
+      "title": "한화생명 상한가 불장 불기둥 외인매수 기관매수 쌍끌이 급등 신고가 두께 12만주"
+    },
+    {
+      "rank": 5,
+      "ticker": "우리로",
+      "score": 45.4,
+      "title": "우리로 급등 외인매수"
+    }
+  ],
+  "alarm_messages": {
+    "pm7": "🔥 [오후 7시 하이브리드 v18.1] 09/26 23:05\n[포트폴리오 베이스 포함] 총 92종목 2494만원 -32.6% / 반도체 쏠림 37.2% / worst 엔켐바이오 -89.32%, 아주IB투자 -78.48%, 뉴엔AI -74.38%, SKC -56.14%, 우리로 -54.96%\n\n[불장 TOP3 - 순수 시장 기준, 물타기 없음]\n1위 코나아이 79.3점 - 바이럴 4.9 x 신선도 1.0 +34.3, 시장테마 지역화폐/추석 +15\n2위 덕산테코피아 79.2점 - 바이럴 5.6 x 신선도 1.0 +39.2, 주주환원 현물배당/소각 +10\n3위 헥토파이낸셜 73.7점 - 바이럴 4.1 x 신선도 1.0 +28.7, 시장테마 스테이블코인 +15\n\n불장 키워드: 상한가 4회, 불장 4회, 외인매수 7회\n내일 갭상 후보: 코나아이, 헥토파이낸셜 - 신규 모니터링만 (포트폴리오 평균단가 무관)\n",
+    "am8": "☀️ [오전 8시 하이브리드 v18.1] 09/27 08:00\n포트폴리오: 92종목 -32.6% / 반도체 37.2% 집중 / worst 엔켐바이오 -89.32%, 아주IB투자 -78.48%, 뉴엔AI -74.38%, SKC -56.14%, 우리로 -54.96%\n오늘 불장 주목(순수 시장): 코나아이 / 덕산테코피아 / 헥토파이낸셜\n- 코나아이: 바이럴 4.9 x 신선도 1.0 +34.3\n- 덕산테코피아: 바이럴 5.6 x 신선도 1.0 +39.2\n\n전략: 포트폴리오는 분석 참고용, 불장 매매는 신규 진입만, 물타기/분할매수 없음\nKRX 어제 상한가: 코나아이, 헥토파이낸셜, 한화생명, 우리로, 리튬포어스\n"
+  },
+  "full_portfolio_snapshot": {
+    "total_stocks": 92,
+    "total_value": 24940000,
+    "total_loss": -12030000,
+    "loss_pct": -32.6,
+    "concentration_risk": {
+      "semiconductor_pct": 37.2
+    },
+    "worst_holdings": [
+      {
+        "name": "엔켐바이오",
+        "loss_pct": -89.32
+      },
+      {
+        "name": "아주IB투자",
+        "loss_pct": -78.48
+      },
+      {
+        "name": "뉴엔AI",
+        "loss_pct": -74.38
+      },
+      {
+        "name": "SKC",
+        "loss_pct": -56.14
+      },
+      {
+        "name": "우리로",
+        "loss_pct": -54.96
+      },
+      {
+        "name": "CCSC",
+        "loss_pct": -98.58
+      },
+      {
+        "name": "페이팔",
+        "loss_pct": -92.44
+      }
+    ],
+    "current_samsung_detailed": {},
+    "current_analysis_BC": {},
+    "my_asset_latest": {}
+  },
+  "current_analysis_BC": {},
+  "my_asset_latest": {},
+  "current_samsung_detailed": {},
+  "action_plan": {
+    "portfolio_base": "92종목 -32.6% / 반도체 37.2% / worst 엔켐바이오 -89.32%, 아주IB투자 -78.48%, 뉴엔AI -74.38%, SKC -56.14%, 우리로 -54.96% - 분석 베이스로만 포함",
+    "immediate": "신규 불장 종목 모니터링만 - 물타기 없음, 포트폴리오 평균단가 무관",
+    "short_1m": "상한가+바이럴+외인매수 3박자 순수 시장 종목만 추적",
+    "mid_3m": "포트폴리오와 불장 완전 분리 유지, 불장은 신규 진입 관점만"
+  }
+}
